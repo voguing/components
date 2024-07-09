@@ -7,7 +7,7 @@ WORKDIR /app
 COPY package*.json pnpm-lock.yaml* ./
 COPY . .
 
-RUN npm config --global set registry https://registry.npmmirror.com
+# RUN npm config --global set registry https://registry.npmmirror.com
 RUN npm i -g pnpm
 RUN pnpm i
 
