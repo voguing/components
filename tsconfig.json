@@ -1,0 +1,17 @@
+{
+  "compilerOptions": {
+    "strict": true,
+    "declaration": true,
+    "skipLibCheck": true,
+    "esModuleInterop": true,
+    "jsx": "react-jsx",
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./src/*"],
+      "@@/*": [".dumi/tmp/*"],
+      "@vogue/components": ["src"],
+      "@vogue/components/*": ["src/*", "*"]
+    }
+  },
+  "include": [".dumirc.ts", "src/**/*", "src/lib", "src/components"]
+}
