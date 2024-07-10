@@ -1,14 +1,20 @@
 {
-  "name": "@vogue/components",
+  "name": "@voguing/components",
   "version": "0.0.1-beta.0",
   "description": "A react library developed with dumi",
   "license": "MIT",
+  "author": "",
+  "main": "dist/index.js",
   "module": "dist/index.js",
   "types": "dist/index.d.ts",
+  "directories": {
+    "doc": "docs"
+  },
   "files": [
     "dist"
   ],
   "scripts": {
+    "beta": "yarn version && npm run build && npm run docs:build && npm publish --registry https://registry.npmjs.org --tag beta",
     "build": "father build",
     "build:watch": "father dev",
     "dev": "dumi dev",
@@ -20,7 +26,7 @@
     "lint:es": "eslint \"{src,test}/**/*.{js,jsx,ts,tsx}\"",
     "prepare": "husky install && dumi setup",
     "prepublishOnly": "father doctor && npm run build",
-    "release": "yarn version && npm run lint && npm run build && npm run docs:build && npm publish --registry https://registry.npmjs.org",
+    "release": "yarn version && npm run build && npm run docs:build && npm publish --registry https://registry.npmjs.org",
     "start": "npm run dev"
   },
   "commitlint": {
