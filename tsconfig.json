@@ -9,8 +9,8 @@
     "paths": {
       "@/*": ["./src/*"],
       "@@/*": [".dumi/tmp/*"],
-      "@vogue/components": ["src"],
-      "@vogue/components/*": ["src/*", "*"]
+      "@voguing/components": ["src"],
+      "@voguing/components/*": ["src/*", "*"]
     }
   },
   "include": [".dumirc.ts", "src/**/*", "src/lib", "src/components"]

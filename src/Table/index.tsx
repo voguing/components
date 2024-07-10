@@ -1,3 +1,5 @@
+'use client';
+
 import { Checkbox } from '@/components/ui/checkbox';
 import {
   TableBody,
@@ -8,7 +10,10 @@ import {
   Table as UITable,
 } from '@/components/ui/table';
 import {
-  ColumnDef,
+  AccessorColumnDef,
+  DisplayColumnDef,
+  GroupColumnDef,
+  RowData,
   flexRender,
   getCoreRowModel,
   getPaginationRowModel,
@@ -17,11 +22,19 @@ import {
 import { useState } from 'react';
 import { DataTablePagination } from './components/Pagination';
 
+export type TableColumn<TData extends RowData, TValue = unknown> =
+  | DisplayColumnDef<TData, TValue>
+  | GroupColumnDef<TData, TValue>
+  | (AccessorColumnDef<TData, TValue> & {
+      width?: number;
+    });
+
 interface TableProps<TData, TValue> {
-  columns: ColumnDef<TData, TValue>[];
+  columns: TableColumn<TData, TValue>[];
   data: TData[];
   rowSelection?: boolean;
   className?: string;
+  pagination?: false;
 }
 
 export function Table<TData, TValue>({
@@ -29,6 +42,7 @@ export function Table<TData, TValue>({
   data,
   rowSelection: propsRowSelection,
   className,
+  pagination,
 }: TableProps<TData, TValue>) {
   const [rowSelection, setRowSelection] = useState({});
   const table = useReactTable({
@@ -74,10 +88,11 @@ export function Table<TData, TValue>({
         <UITable className="min-w-max">
           <colgroup>
             {table.getHeaderGroups().map((headerGroup) =>
-              headerGroup.headers.map((header: any) => {
+              headerGroup.headers.map((header: any, index) => {
                 return (
                   <col
-                    key={header.id}
+                    data-key={`${headerGroup.id}.${header.id}.${index}`}
+                    key={`${headerGroup.id}.${header.id}.${index}`}
                     style={{ width: header.column.columnDef.width }}
                   />
                 );
@@ -87,9 +102,9 @@ export function Table<TData, TValue>({
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id}>
-                {headerGroup.headers.map((header) => {
+                {headerGroup.headers.map((header, index) => {
                   return (
-                    <TableHead key={header.id}>
+                    <TableHead key={`${headerGroup.id}.${header.id}.${index}`}>
                       {header.isPlaceholder
                         ? null
                         : flexRender(
@@ -104,13 +119,16 @@ export function Table<TData, TValue>({
           </TableHeader>
           <TableBody>
             {table.getRowModel().rows?.length ? (
-              table.getRowModel().rows.map((row) => (
+              table.getRowModel().rows.map((row, index) => (
                 <TableRow
-                  key={row.id}
+                  key={`${row.id}.${index}`}
                   data-state={row.getIsSelected() && 'selected'}
                 >
-                  {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id}>
+                  {row.getVisibleCells().map((cell, index) => (
+                    <TableCell
+                      key={`${cell.id}.${index}`}
+                      data-key={`${cell.id}.${index}`}
+                    >
                       {flexRender(
                         cell.column.columnDef.cell,
                         cell.getContext(),
@@ -132,9 +150,11 @@ export function Table<TData, TValue>({
           </TableBody>
         </UITable>
       </div>
-      <div className="mt-4">
-        <DataTablePagination rowSelection={propsRowSelection} table={table} />
-      </div>
+      {pagination !== false && (
+        <div className="mt-4">
+          <DataTablePagination rowSelection={propsRowSelection} table={table} />
+        </div>
+      )}
     </div>
   );
 }

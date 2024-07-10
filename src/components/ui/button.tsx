@@ -1,4 +1,7 @@
+'use client';
+
 import { Slot } from '@radix-ui/react-slot';
+import { Spinner } from '@radix-ui/themes';
 import { cva, type VariantProps } from 'class-variance-authority';
 import * as React from 'react';
 
@@ -18,7 +21,7 @@ const buttonVariants = cva(
         secondary:
           'bg-secondary text-secondary-foreground shadow-sm hover:bg-secondary/80',
         ghost: 'hover:bg-accent hover:text-accent-foreground',
-        link: 'text-primary underline-offset-4 hover:underline',
+        link: 'text-primary !px-0 hover:text-primary/80',
       },
       size: {
         default: 'h-9 px-4 py-2',
@@ -34,6 +37,8 @@ const buttonVariants = cva(
   },
 );
 
+export type ButtonVariant = VariantProps<typeof buttonVariants>;
+
 export interface ButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement>,
     VariantProps<typeof buttonVariants> {
@@ -41,14 +46,29 @@ export interface ButtonProps
 }
 
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
-  ({ className, variant, size, asChild = false, ...props }, ref) => {
+  (
+    { className, variant, size, asChild = false, onClick, children, ...props },
+    ref,
+  ) => {
+    const [loading, setLoading] = React.useState(false);
     const Comp = asChild ? Slot : 'button';
     return (
       <Comp
         className={cn(buttonVariants({ variant, size, className }))}
         ref={ref}
+        onClick={async (e) => {
+          const result: any = onClick?.(e);
+          if (result instanceof Promise) {
+            setLoading(true);
+            await result;
+            setLoading(false);
+          }
+        }}
         {...props}
-      />
+      >
+        {loading ? <Spinner className="mr-2" /> : null}
+        {children}
+      </Comp>
     );
   },
 );

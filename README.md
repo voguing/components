@@ -1,7 +1,7 @@
-# @vogue/components
+# @voguing/components
 
-[![NPM version](https://img.shields.io/npm/v/@vogue/components.svg?style=flat)](https://npmjs.org/package/@vogue/components)
-[![NPM downloads](http://img.shields.io/npm/dm/@vogue/components.svg?style=flat)](https://npmjs.org/package/@vogue/components)
+[![NPM version](https://img.shields.io/npm/v/@voguing/components.svg?style=flat)](https://npmjs.org/package/@voguing/components)
+[![NPM downloads](http://img.shields.io/npm/dm/@voguing/components.svg?style=flat)](https://npmjs.org/package/@voguing/components)
 
 A react library developed with dumi
 

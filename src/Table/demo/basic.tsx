@@ -1,4 +1,4 @@
-import { Table } from '@vogue/components';
+import { Table } from '@voguing/components';
 
 export default () => (
   <Table
